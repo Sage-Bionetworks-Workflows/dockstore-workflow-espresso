@@ -6,7 +6,7 @@ The WDL workflow that is published in this repository was generated using the [e
 
 ## WDL
 
-The example main workflow file, `haplotype-calling.wdl` is placed at the root of the
+The main workflow file, `haplotype-calling.wdl` is placed at the root of the
 repository. Subworkflows are present in the `subworkflows` folder. 
 
 ## Tests
