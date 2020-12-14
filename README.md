@@ -1,17 +1,13 @@
-# dockstore-workflow-template
-A template project for setting up a [CWL](https://www.commonwl.org/) Workflow.
+# dockstore-workflow-espresso
+A WDL workflow for WGS data processing
 
 # Description
+The WDL workflow that is published in this repository was generated using the [espresso-caller](https://pypi.org/project/espresso-caller/) Python tool, which is published under the [MIT license](https://opensource.org/licenses/MIT)
 
-This template sets up an opinionated way to organize a repository containing
-workflow, subworkflows, and tests for publication on Dockstore.
+## WDL
 
-## CWL
-
-The example main workflow file, `main.cwl`, if placed at the root of the
-repository. The placeholder workflow includes another workflow as a step from
-the `subworkflows` directory. The subworkflow has an example of using a
-versioned tool from another repository.
+The main workflow file, `haplotype-calling.wdl` is placed at the root of the
+repository. Subworkflows are present in the `subworkflows` folder. 
 
 ## Tests
 
