@@ -1,9 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
 
@@ -19,20 +16,25 @@ jobs:
         id: setup_python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.7'
+          python-version: '3.8'
 
       - name: Setup Test Environment
         id: setup_test_environment
         run: |
           python -m pip install pipenv
           pipenv install --dev
-          short_sha=${GITHUB_SHA::8}
-          echo "::set-env name=SHORT_SHA::$short_sha"
 
-      - name: Test CWL
-        id: test_cwl
+      - name: Test WDL
+        id: test_wdl
+        shell: bash {0}
         run: |
-          pipenv run cwltest --test tests/test-descriptions.yaml --tool cwl-runner
+          # Run tests
+          pipenv run python -m pytest
+
+          # This logic accomodates code 5, which is
+          # returned by pytest when no tests are run.
+          # Feel free to remove it after the first test is added.
+          exit $(( $? == 5 ? 0 : $? ))
 
   tag:
     if: "!contains(github.event.head_commit.message, '[skip-ci]')"
@@ -51,3 +53,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: patch
           release_branches: master
+
+      - name: Zip Sub-workfows
+        id: zip_subworkflows
+        run: zip -j -r ${{ github.workspace }}/subworkflows.zip ${{ github.workspace }}/subworkflows/*
+
+      - name: Upload Artifacts
+        id: upload_artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: subworkflows.zip
+          path: ${{ github.workspace }}/subworkflows.zip
